@@ -6,8 +6,8 @@ const passport = require("passport")
 const JWTStrategy = require('passport-jwt').Strategy
 const { ExtractJwt } = require("passport-jwt")
 const User = require("./models/User");
-const { jwt_secret ,errorCodesEnum } = require("./Config")
-const { createResponse } = require("./utils/Helpers")
+const { jwt_secret, errorCodesEnum } = require("./Config")
+const { createError } = require("./utils/Helpers")
 
 
 const app = express()
@@ -57,15 +57,18 @@ passport.use(new JWTStrategy(JWT_opts, async (payload, done) => {
 
 
 // API routes
-const userApiRoutes = require("./routes/auth");
+const user_routes = require("./routes/Auth");
+const category_routes = require("./routes/Category");
+
 // Fire API Routes
-app.use("/auth/", userApiRoutes);
+app.use("/auth/", user_routes);
+app.use("/category/", category_routes);
 
 // Handle validation
 app.use((err, req, res, next) => {
     if (err && err.error && err.error.isJoi) {
         // we had a joi error, let's return a custom 400 json response
-        response = createResponse(errorCodesEnum.CONFLICT, "", err.error, "Error on validation ... ", {});
+        response = createError(errorCodesEnum.CONFLICT, "Error on validation ... ", err.error);
         res.status(200).json(response);
         return;
     } else {

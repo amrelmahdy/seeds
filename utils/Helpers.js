@@ -1,7 +1,7 @@
 const Joi = require('joi')
 
 module.exports = {
-    createError: (code, message) => ({ code, message }),
+    createError: (code, message, validation) => ({ code, message, validation}),
     validationSchemas: {
         loginSchema: Joi.object({
             email: Joi.string().required(),

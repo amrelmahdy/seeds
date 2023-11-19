@@ -6,6 +6,11 @@ const productSchema = new Schema({
     description: String,
     price: Number,
     inventory: Number,
+    poster: {
+        type: String,
+        default: "/public/dist/img/placeholder.png",
+    },
+    images: [String],
     created_at: {
         type: Date,
         default: Date.now()

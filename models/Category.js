@@ -3,6 +3,10 @@ const Schema = mongoose.Schema
 
 const categorySchema = new Schema({
     name: String,
+    icon: {
+        type: String,
+        default: "/public/dist/img/placeholder.png",
+    },
     subcategories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
     products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
     created_at: {

@@ -18,7 +18,7 @@ module.exports = {
             const userAlreadyExists = await User.userAlreadyExists({ email: newUser.email });
             // check if user exists
             if (userAlreadyExists) {
-                response = createError(errorCodesEnum.CONFLICT, "", {}, "User has already been taken", {});
+                response = createError(errorCodesEnum.CONFLICT,"User has already been taken");
                 res.json(response);
                 return
             }
