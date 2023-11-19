@@ -12,7 +12,6 @@ const passport = require("passport")
 
 router.post("/register", validator.body(validationSchemas.registerSchema), controller.register)
 router.post("/login", validator.body(validationSchemas.loginSchema),controller.login);
-router.post("/getUserById", controller.getUserById);
 router.post("/profile", passport.authenticate("jwt",   {session: false}), controller.profile);
 
 module.exports = router

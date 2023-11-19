@@ -28,10 +28,9 @@ const userSchema = new Schema({
         type: Number,
         default: 0 //  User by default
     },
-    created_at: {
-        type: Date,
-        default: Date.now()
-    }
+    orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
+    addresses: [{ type: Schema.Types.ObjectId, ref: 'Address' }],
+    paymentMethods: [{ type: Schema.Types.ObjectId, ref: 'PaymentMethod' }]
 },
     {
         toJSON: {
@@ -47,7 +46,7 @@ const userSchema = new Schema({
         }, timestamps: true
     })
 
-const User = mongoose.model("user", userSchema)
+const User = mongoose.model("User", userSchema)
 module.exports = User
 
 

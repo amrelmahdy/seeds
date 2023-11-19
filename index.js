@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const dbName = "shaheen-seeds"
 const dbUsername = "amrelmhdy"
 const dbPassword = "Il1Xj5OYq8COfgkP"
-const dbURL = "mongodb+srv://amrelmhdy:Il1Xj5OYq8COfgkP@cluster-shaheen-seeds.wqqdeks.mongodb.net/"
+const dbURL = "mongodb://localhost:27017/"
 // mongoose.set('useFindAndModify', false);
 mongoose.connect(`${dbURL}${dbName}`);
 /************************************/

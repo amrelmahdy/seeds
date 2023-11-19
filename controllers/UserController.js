@@ -1,10 +1,14 @@
 const User = require('../models/User')
-const { createResponse } = require('../utils/Helpers')
+const { createError } = require('../utils/Helpers')
 const { errorCodesEnum, jwt_secret } = require('../Config')
 const JWT = require('jsonwebtoken')
 
+const now = Date.now();
+
 signToken = (payload) => {
-    return JWT.sign(payload, jwt_secret, { expiresIn: 3600 });
+    const access_token = JWT.sign(payload, jwt_secret, { expiresIn: 3600 });
+    const refresh_token = JWT.sign(payload, jwt_secret, { expiresIn: 86400 });
+    return { access_token, refresh_token };
 }
 
 module.exports = {
@@ -14,7 +18,7 @@ module.exports = {
             const userAlreadyExists = await User.userAlreadyExists({ email: newUser.email });
             // check if user exists
             if (userAlreadyExists) {
-                response = createResponse(errorCodesEnum.CONFLICT, "", {}, "User has already been taken", {});
+                response = createError(errorCodesEnum.CONFLICT, "", {}, "User has already been taken", {});
                 res.json(response);
                 return
             }
@@ -28,15 +32,19 @@ module.exports = {
                     email: user.email,
                     mobile: user.mobile
                 };
-                const token = signToken(payload);
-                response = createResponse(errorCodesEnum.CREATED, token, {}, "User added successfully", payload);
+                const { access_token, refresh_token } = signToken(payload);
                 res.json({
-                    token,
-                    user
+                    access_token,
+                    token_type: "Bearer",
+                    "expires_in": "3600",
+                    "expires_at": `${now + 3600}`,
+                    refresh_token,
+                    "refresh_expires_at": `${now + 86400}`,
+                    "refresh_expires_in": "86400",
+                    user_info: user
                 });
             }
-            response = createResponse(errorCodesEnum.INTERNAL_SERVER_ERROR, "", {}, "Whoops something went wrong", error);
-            res.json(error);
+            response = createError(errorCodesEnum.INTERNAL_SERVER_ERROR, "Whoops something went wrong");
         } catch (error) {
             next(error);
         }
@@ -52,18 +60,24 @@ module.exports = {
                         email: user.email,
                     }
                     // generate token for this use
-                    const token = signToken(payload);
+                    const { access_token, refresh_token } = signToken(payload);
                     res.json({
-                        token,
-                        user
+                        access_token,
+                        token_type: "Bearer",
+                        "expires_in": "3600",
+                        "expires_at": `${now + 3600}`,
+                        refresh_token,
+                        "refresh_expires_at": `${now + 86400}`,
+                        "refresh_expires_in": "86400",
+                        user_info: user
                     });
 
                 }).catch(err => {
-                    response = createResponse(errorCodesEnum.Unauthorized, "", [], err.msg, {});
+                    response = createError(errorCodesEnum.Unauthorized, "User not found");
                     res.json(response);
                 });
             }).catch(err => {
-                response = createResponse(errorCodesEnum.Unauthorized, "", [], "User not found ... ", {});
+                response = createError(errorCodesEnum.Unauthorized, "Unable to get user information");
                 res.status(200).json(response);
             })
 
@@ -73,22 +87,7 @@ module.exports = {
 
 
     },
-    profile: async (req, res, next) => {
+    profile: async (req, res) => {
         res.json(req.user);
-    },
-    getUserById: (req, res, next) => {
-        //res.json(req.body.email)
-        try {
-            User.findByQuery({ _id: req.body.id }).then(user => {
-                response = createResponse(errorCodesEnum.OK, "", {}, "..", user);
-                res.json(response);
-            }).catch(err => {
-                response = createResponse(errorCodesEnum.Unauthorized, "", [], "User not found ... ", {});
-                res.status(200).json(response);
-            })
-
-        } catch (error) {
-            next(error);
-        }
     }
 }

@@ -1,17 +1,7 @@
 const Joi = require('joi')
 
 module.exports = {
-    createResponse: (code, token, validation, desc, response) => {
-        return {
-            Error: {
-                token: token,
-                code: code,
-                validation: validation,
-                desc: desc,
-            },
-            Response: response
-        }
-    },
+    createError: (code, message) => ({ code, message }),
     validationSchemas: {
         loginSchema: Joi.object({
             email: Joi.string().required(),
