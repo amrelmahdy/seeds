@@ -10,11 +10,7 @@ const productSchema = new Schema({
         type: String,
         default: "/public/dist/img/placeholder.png",
     },
-    images: [String],
-    created_at: {
-        type: Date,
-        default: Date.now()
-    }
+    images: [String]
 },
     {
         toJSON: {

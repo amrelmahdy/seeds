@@ -13,6 +13,10 @@ module.exports = {
             email: Joi.string().required().email(),
             mobile: Joi.string().required(),
             password: Joi.string().required()
-        })
+        }),
+        addCategorySchema: Joi.object({
+            ar_name: Joi.string().required(),
+            en_name: Joi.string().required()
+        }),
     }
 };

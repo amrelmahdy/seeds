@@ -7,13 +7,10 @@ const validator = require('express-joi-validation').createValidator({
 })
 const passport = require("passport")
 
-
-
-
-router.get("/", validator.body(validationSchemas.registerSchema), controller.getAll)
-router.post("/", validator.body(validationSchemas.loginSchema),controller.create);
-router.post("/update", passport.authenticate("jwt",   {session: false}), controller.update);
-router.delete("/delete", passport.authenticate("jwt",   {session: false}), controller.delete);
+router.get("/", controller.getAll)
+router.post("/", validator.body(validationSchemas.addCategorySchema),controller.create);
+router.post("/:id", passport.authenticate("jwt",   {session: false}), controller.update);
+router.delete("/:id", passport.authenticate("jwt",   {session: false}), controller.delete);
 
 module.exports = router
 

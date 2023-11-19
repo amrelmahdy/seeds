@@ -68,7 +68,7 @@ app.use("/category/", category_routes);
 app.use((err, req, res, next) => {
     if (err && err.error && err.error.isJoi) {
         // we had a joi error, let's return a custom 400 json response
-        response = createError(errorCodesEnum.CONFLICT, "Error on validation ... ", err.error);
+        response = createError(errorCodesEnum.CONFLICT, "Error on validation ... ", err?.error?.details ||{} );
         res.status(200).json(response);
         return;
     } else {
