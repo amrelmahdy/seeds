@@ -8,7 +8,8 @@ const categorySchema = new Schema({
         type: String,
         default: "/public/dist/img/placeholder.png",
     },
-    subcategories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
+    parent: { type: Schema.Types.ObjectId, ref: 'Category' },
+    sub_categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
     products: [{ type: Schema.Types.ObjectId, ref: 'Product' }]
 },
     {

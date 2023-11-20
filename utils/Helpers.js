@@ -16,7 +16,18 @@ module.exports = {
         }),
         addCategorySchema: Joi.object({
             ar_name: Joi.string().required(),
-            en_name: Joi.string().required()
+            en_name: Joi.string().required(),
+            sub_categories: Joi.array(),
+            parent: Joi.string()
         }),
+        addProductSchema:  Joi.object({
+            ar_name: Joi.string().required(),
+            en_name: Joi.string().required(),
+            ar_description: Joi.string().required(),
+            en_description: Joi.string().required(),
+            price: Joi.number().required()
+        }),
+
+     
     }
 };

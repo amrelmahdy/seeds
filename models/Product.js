@@ -2,10 +2,15 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 const productSchema = new Schema({
-    name: String,
-    description: String,
+    ar_name: String,
+    ar_name: String,
+    ar_description: String,
+    en_description: String,
     price: Number,
-    inventory: Number,
+    inventory: {
+        type: Number,
+        default: 0,
+    },
     poster: {
         type: String,
         default: "/public/dist/img/placeholder.png",

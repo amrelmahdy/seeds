@@ -8,11 +8,7 @@ const addressSchema = new Schema({
     city: String,
     state: String,
     zip: String,
-    country: String,
-    created_at: {
-        type: Date,
-        default: Date.now()
-    }
+    country: String
 },
     {
         toJSON: {

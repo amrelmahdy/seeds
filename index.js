@@ -59,10 +59,12 @@ passport.use(new JWTStrategy(JWT_opts, async (payload, done) => {
 // API routes
 const user_routes = require("./routes/Auth");
 const category_routes = require("./routes/Category");
+const product_routes = require("./routes/Product");
 
 // Fire API Routes
 app.use("/auth/", user_routes);
 app.use("/category/", category_routes);
+app.use("/product/", product_routes);
 
 // Handle validation
 app.use((err, req, res, next) => {

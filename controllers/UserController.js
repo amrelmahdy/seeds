@@ -18,7 +18,7 @@ module.exports = {
             const userAlreadyExists = await User.userAlreadyExists({ email: newUser.email });
             // check if user exists
             if (userAlreadyExists) {
-                response = createError(errorCodesEnum.CONFLICT,"User has already been taken");
+                response = createError(errorCodesEnum.CONFLICT, "User has already been taken");
                 res.json(response);
                 return
             }
@@ -43,10 +43,13 @@ module.exports = {
                     "refresh_expires_in": "86400",
                     user_info: user
                 });
+            } else {
+                response = createError(errorCodesEnum.INTERNAL_SERVER_ERROR, "Whoops something went wrong");
+                res.json(response);
             }
-            response = createError(errorCodesEnum.INTERNAL_SERVER_ERROR, "Whoops something went wrong");
         } catch (error) {
-            next(error);
+            response = createError(errorCodesEnum.INTERNAL_SERVER_ERROR, "Whoops something went wrong");
+            res.json(response);
         }
     },
     login: async (req, res, next) => {
@@ -82,7 +85,8 @@ module.exports = {
             })
 
         } catch (error) {
-            next(error);
+            response = createError(errorCodesEnum.INTERNAL_SERVER_ERROR, "Whoops something went wrong");
+            res.json(response);
         }
 
 
